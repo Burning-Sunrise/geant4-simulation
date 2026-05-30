@@ -16,7 +16,7 @@ brew install zlib cmake xerces-c qt xquartz root
 # mac's built-in C++ compiler will be used
 ```
 
-> ⚠️ **Log out and log back in** after installing dependencies.
+> ⚠️ **Log out and log back in your macOS account** after installing dependencies.
 
 ### Download & Extract Geant4
 
