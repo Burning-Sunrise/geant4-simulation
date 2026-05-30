@@ -5,7 +5,7 @@ A step-by-step guide for installing and running Geant4 simulations on macOS.
 > ⚠️ **Why not pixi?**
 > Pixi has known compatibility issues on macOS (e.g. the Qt `cocoa` platform plugin often fails to load). Installing from source is more reliable and is the recommended approach here. If you still want to try pixi, see [INSTALL_PIXI.md](./INSTALL_PIXI.md).
 
-## Installation
+## Installation from the source
 
 ### Prerequisites
 
