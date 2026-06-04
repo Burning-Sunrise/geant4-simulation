@@ -163,6 +163,10 @@ root
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+## Acknowledgments
+
+Special thanks to Shashank for his patience and guidance throughout this project. Much of what I learned came from his willingness to explain things step by step, and this tutorial would not have been possible without his help.
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
