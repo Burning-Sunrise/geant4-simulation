@@ -52,6 +52,8 @@ RunAction::RunAction()
 
     analysisManager->SetVerboseLevel(1);
     analysisManager->SetNtupleMerging(true);
+    analysisManager->SetDefaultFileType("root");
+    analysisManager->SetFileName("msc_output");
 
     // creating ntuple
     G4int gasNtupleId = analysisManager->CreateNtuple(
@@ -73,7 +75,41 @@ RunAction::RunAction()
     analysisManager->CreateNtupleDColumn(exitNtupleId, "exit_pos_x");
     analysisManager->CreateNtupleDColumn(exitNtupleId, "exit_pos_y");
     analysisManager->CreateNtupleDColumn(exitNtupleId, "exit_pos_z");
+    analysisManager->CreateNtupleDColumn(exitNtupleId, "entry_KE");
+    analysisManager->CreateNtupleDColumn(exitNtupleId, "entry_momentum_x");
+    analysisManager->CreateNtupleDColumn(exitNtupleId, "entry_momentum_y");
+    analysisManager->CreateNtupleDColumn(exitNtupleId, "entry_momentum_z");
+    analysisManager->CreateNtupleDColumn(exitNtupleId, "entry_pos_x");
+    analysisManager->CreateNtupleDColumn(exitNtupleId, "entry_pos_y");
+    analysisManager->CreateNtupleDColumn(exitNtupleId, "entry_pos_z");
+    analysisManager->CreateNtupleDColumn(exitNtupleId, "gas_track_length");
+    analysisManager->CreateNtupleIColumn(exitNtupleId, "gas_step_count");
+    analysisManager->CreateNtupleIColumn(exitNtupleId, "entered");
     analysisManager->FinishNtuple(exitNtupleId);
+
+    // A compact step-level diagnostic is written only for the first ten
+    // events.  It distinguishes geometric boundaries from the first recorded
+    // non-zero energy-deposit hit.
+    G4int stepNtupleId = analysisManager->CreateNtuple(
+        "StepDebug", "Primary steps near and inside the gas");
+    analysisManager->CreateNtupleIColumn(stepNtupleId, "Event_no");
+    analysisManager->CreateNtupleIColumn(stepNtupleId, "Step_no");
+    // Volume codes: 0 = World, 1 = GasBox, -1 = other.
+    analysisManager->CreateNtupleIColumn(stepNtupleId, "pre_volume_code");
+    analysisManager->CreateNtupleIColumn(stepNtupleId, "post_volume_code");
+    analysisManager->CreateNtupleIColumn(stepNtupleId, "process_type");
+    analysisManager->CreateNtupleIColumn(stepNtupleId, "process_subtype");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "step_length");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "pre_z");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "post_z");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "pre_px");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "pre_py");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "pre_pz");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "post_px");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "post_py");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "post_pz");
+    analysisManager->CreateNtupleDColumn(stepNtupleId, "edep");
+    analysisManager->FinishNtuple(stepNtupleId);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -81,12 +117,9 @@ RunAction::RunAction()
 void RunAction::BeginOfRunAction(G4Run const*)
 {
     auto analysisManager = G4AnalysisManager::Instance();
-    G4String fileName = "/Users/s.x./Data/TPC_Simulation/Muon.root";  /// name
-                                                                      /// of
-                                                                      /// the
-                                                                      /// root
-                                                                      /// file
-    analysisManager->OpenFile(fileName);
+    // The macro can choose a non-destructive output path with
+    // /analysis/setFileName <path>.  OpenFile() respects that setting.
+    analysisManager->OpenFile();
     G4cout << "Using " << analysisManager->GetType() << G4endl;
 }
 

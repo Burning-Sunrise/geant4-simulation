@@ -33,6 +33,7 @@
 #include "G4Box.hh"
 #include "G4Colour.hh"
 #include "G4Cons.hh"
+#include "G4GenericMessenger.hh"
 #include "G4LogicalVolume.hh"
 #include "G4NistManager.hh"
 #include "G4PVPlacement.hh"
@@ -45,6 +46,24 @@
 
 namespace B1
 {  //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+DetectorConstruction::DetectorConstruction()
+    : fGasLength(1.0 * m)
+{
+    fMessenger = new G4GenericMessenger(
+        this, "/B1/det/", "Detector geometry controls");
+    auto& gasLengthCommand = fMessenger->DeclarePropertyWithUnit(
+        "gasLength", "cm", fGasLength,
+        "Longitudinal GasBox length along the z axis.");
+    gasLengthCommand.SetParameterName("length", false);
+    gasLengthCommand.SetRange("length > 0.");
+    gasLengthCommand.SetStates(G4State_PreInit);
+}
+
+DetectorConstruction::~DetectorConstruction()
+{
+    delete fMessenger;
+}
 
 G4VPhysicalVolume* DetectorConstruction::Construct()
 {
@@ -77,13 +96,18 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
         "HeCO2_10atm", gasDensity, 2, kStateGas, temperature, pressure);
     gasMix->AddElement(elHe, 0.175);  // mass fraction of He
     gasMix->AddMaterial(CO2, 0.825);  // mass fraction of CO2
+    G4cout << "HeCO2_10atm density = " << gasDensity / (mg / cm3)
+           << " mg/cm3, radiation length = " << gasMix->GetRadlen() / cm
+           << " cm" << G4endl;
     // --- End of Material Definition ---
 
     G4bool checkOverlaps = true;
 
     // 2. World Volume
-    // World size is set to 1.2m to contain the 1m cubic box
-    G4double world_size = 1.2 * m;
+    // Leave 10 cm of vacuum on each longitudinal side of the gas and keep the
+    // original 1.2 m transverse world size.
+    G4double world_transverse_size = 1.2 * m;
+    G4double world_longitudinal_size = fGasLength + 0.2 * m;
     G4double vacDensity = universe_mean_density;
     G4double vacPressure = 1.e-19 * pascal;
     G4double vacTemperature = 0.1 * kelvin;
@@ -97,7 +121,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
     /// logic -> material,properties
     auto solidWorld = new G4Box(
-        "World", 0.5 * world_size, 0.5 * world_size, 0.5 * world_size);
+        "World",
+        0.5 * world_transverse_size,
+        0.5 * world_transverse_size,
+        0.5 * world_longitudinal_size);
     auto logicWorld = new G4LogicalVolume(solidWorld, world_mat, "World");
     auto physWorld = new G4PVPlacement(nullptr,
                                        G4ThreeVector(),
@@ -108,10 +135,16 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                                        0,
                                        checkOverlaps);
 
-    // 3. Gas Box (1m x 1m x 1m cube)
-    G4double box_size = 1.0 * m;
-    auto solidBox
-        = new G4Box("GasBox", 0.5 * box_size, 0.5 * box_size, 0.5 * box_size);
+    // 3. Gas Box.  Its x/y dimensions remain 1 m; the z length can be set in
+    // a macro before /run/initialize with /B1/det/gasLength.
+    G4double transverse_box_size = 1.0 * m;
+    auto solidBox = new G4Box(
+        "GasBox",
+        0.5 * transverse_box_size,
+        0.5 * transverse_box_size,
+        0.5 * fGasLength);
+    G4cout << "GasBox z boundaries = " << -0.5 * fGasLength / mm
+           << " mm to " << 0.5 * fGasLength / mm << " mm" << G4endl;
 
     // Fill the box with our custom gas mixture
     auto logicBox = new G4LogicalVolume(solidBox, gasMix, "GasBox");

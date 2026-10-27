@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow-black" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#222"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#c62828"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1257b8"/>
+    </marker>
+    <style>
+      text { font-family: Helvetica, Arial, sans-serif; fill: #171717; }
+      .panel-title { font-size: 38px; font-weight: 600; }
+      .subtitle { font-size: 25px; }
+      .label { font-size: 24px; }
+      .small { font-size: 20px; }
+      .formula { font-size: 27px; }
+      .axis { stroke: #222; stroke-width: 3; }
+      .boundary { stroke: #333; stroke-width: 3; }
+      .track { fill: none; stroke: #111; stroke-width: 4; }
+      .construction { fill: none; stroke-width: 4; stroke-dasharray: 11 9; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="white"/>
+  <text x="800" y="62" text-anchor="middle" font-size="46" font-weight="600">Why the original ψₓ was too large</text>
+  <line x1="800" y1="92" x2="800" y2="865" stroke="#8a8a8a" stroke-width="2"/>
+
+  <!-- LEFT: wrong source -->
+  <rect x="98" y="112" width="600" height="58" fill="#f7d8d8"/>
+  <text x="398" y="153" text-anchor="middle" class="panel-title">Previous calculation</text>
+  <text x="398" y="204" text-anchor="middle" class="subtitle" fill="#9e1f1f">source = −50 while ROOT positions remained in mm</text>
+
+  <rect x="125" y="282" width="610" height="374" rx="8" fill="#eaf4fa"/>
+  <text x="145" y="316" class="small" fill="#4a6572">GasBox: z = −500 to +500 mm</text>
+  <line x1="170" y1="560" x2="735" y2="560" class="axis" marker-end="url(#arrow-black)"/>
+  <text x="742" y="568" class="label">+z</text>
+  <line x1="170" y1="625" x2="170" y2="282" class="boundary"/>
+  <line x1="710" y1="625" x2="710" y2="282" class="boundary"/>
+  <text x="170" y="685" text-anchor="middle" class="small">−500 mm</text>
+  <text x="413" y="685" text-anchor="middle" class="small" fill="#c62828">−50 mm</text>
+  <text x="710" y="685" text-anchor="middle" class="small">+500 mm</text>
+
+  <path d="M170,560 C250,550 295,605 355,563 C420,518 454,570 512,525 C570,477 624,506 710,438" class="track"/>
+  <circle cx="170" cy="560" r="7" fill="#111"/>
+  <circle cx="413" cy="560" r="8" fill="#c62828"/>
+  <circle cx="710" cy="438" r="8" fill="#111"/>
+  <text x="190" y="540" class="small">true gas entry</text>
+  <text x="425" y="588" class="small" fill="#c62828">assumed entry</text>
+  <text x="604" y="414" class="small">same endpoint</text>
+
+  <line x1="413" y1="560" x2="710" y2="438" class="construction" stroke="#c62828"/>
+  <path d="M469,560 A56,56 0 0 0 465,539" fill="none" stroke="#c62828" stroke-width="4"/>
+  <text x="477" y="535" class="label" fill="#c62828">ψₓ,wrong</text>
+  <line x1="710" y1="560" x2="710" y2="438" stroke="#222" stroke-width="2" marker-end="url(#arrow-black)"/>
+  <text x="720" y="505" class="label">Δx</text>
+
+  <line x1="170" y1="730" x2="413" y2="730" stroke="#c62828" stroke-width="3" stroke-dasharray="8 7"/>
+  <line x1="170" y1="716" x2="170" y2="744" stroke="#c62828" stroke-width="3"/>
+  <line x1="413" y1="716" x2="413" y2="744" stroke="#c62828" stroke-width="3"/>
+  <text x="292" y="765" text-anchor="middle" class="small" fill="#c62828">450 mm omitted from L</text>
+  <line x1="413" y1="800" x2="710" y2="800" stroke="#c62828" stroke-width="3" marker-end="url(#arrow-red)"/>
+  <line x1="710" y1="800" x2="413" y2="800" stroke="#c62828" stroke-width="3" marker-end="url(#arrow-red)"/>
+  <text x="562" y="837" text-anchor="middle" class="formula" fill="#c62828">ψₓ = atan2(Δx, 550 mm)</text>
+
+  <!-- RIGHT: correct entry -->
+  <rect x="902" y="112" width="600" height="58" fill="#dceafa"/>
+  <text x="1202" y="153" text-anchor="middle" class="panel-title">Correct boundary calculation</text>
+  <text x="1202" y="204" text-anchor="middle" class="subtitle" fill="#1257b8">Use the recorded GasBox entry and exit</text>
+
+  <rect x="865" y="282" width="610" height="374" rx="8" fill="#eaf4fa"/>
+  <text x="885" y="316" class="small" fill="#4a6572">GasBox: z = −500 to +500 mm</text>
+  <line x1="910" y1="560" x2="1475" y2="560" class="axis" marker-end="url(#arrow-black)"/>
+  <text x="1482" y="568" class="label">+z</text>
+  <line x1="910" y1="625" x2="910" y2="282" class="boundary"/>
+  <line x1="1450" y1="625" x2="1450" y2="282" class="boundary"/>
+  <text x="910" y="685" text-anchor="middle" class="small">−500 mm</text>
+  <text x="1450" y="685" text-anchor="middle" class="small">+500 mm</text>
+
+  <path d="M910,560 C990,550 1035,605 1095,563 C1160,518 1194,570 1252,525 C1310,477 1364,506 1450,438" class="track"/>
+  <circle cx="910" cy="560" r="8" fill="#1257b8"/>
+  <circle cx="1450" cy="438" r="8" fill="#111"/>
+  <text x="930" y="592" class="small" fill="#1257b8">recorded entry</text>
+  <text x="1344" y="414" class="small">same endpoint</text>
+
+  <line x1="910" y1="560" x2="1450" y2="438" class="construction" stroke="#1257b8"/>
+  <path d="M980,560 A70,70 0 0 0 978,545" fill="none" stroke="#1257b8" stroke-width="4"/>
+  <text x="1000" y="515" class="label" fill="#1257b8">ψₓ,correct</text>
+  <line x1="1450" y1="560" x2="1450" y2="438" stroke="#222" stroke-width="2" marker-end="url(#arrow-black)"/>
+  <text x="1460" y="505" class="label">Δx</text>
+
+  <line x1="910" y1="800" x2="1450" y2="800" stroke="#1257b8" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <line x1="1450" y1="800" x2="910" y2="800" stroke="#1257b8" stroke-width="3" marker-end="url(#arrow-blue)"/>
+  <text x="1180" y="752" text-anchor="middle" class="label" fill="#1257b8">Full gas length: 1000 mm</text>
+  <text x="1180" y="837" text-anchor="middle" class="formula" fill="#1257b8">ψₓ = atan2(Δx, 1000 mm)</text>
+
+  <text x="398" y="875" text-anchor="middle" class="label" fill="#c62828">Central-98% σ = 4.89°</text>
+  <text x="1202" y="875" text-anchor="middle" class="label" fill="#1257b8">Central-98% σ = 2.68°</text>
+</svg>

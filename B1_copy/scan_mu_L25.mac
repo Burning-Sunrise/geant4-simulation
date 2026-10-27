@@ -1,0 +1,15 @@
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/B1/det/gasLength 25 cm
+/process/msc/MuHadLateralDisplacement true
+/run/initialize
+/analysis/setFileName /Users/s.x./Data/TPC_Simulation/entry_scan_mu_p1000_L25_lateral.root
+/gun/particle mu-
+/gun/momentumAmp 1000 MeV
+/gun/position 0 0 -13.5 cm
+/gun/direction 0 0 1
+/run/printProgress 1000
+/random/setSeeds 13579 24680
+/run/beamOn 10000

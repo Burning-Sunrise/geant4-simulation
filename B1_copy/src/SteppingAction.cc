@@ -31,10 +31,12 @@
 
 #include "DetectorConstruction.hh"
 #include "EventAction.hh"
+#include "G4AnalysisManager.hh"
 #include "G4Event.hh"
 #include "G4LogicalVolume.hh"
 #include "G4RunManager.hh"
 #include "G4Step.hh"
+#include "G4VProcess.hh"
 #include "G4SystemOfUnits.hh"
 
 namespace B1
@@ -51,34 +53,78 @@ SteppingAction::SteppingAction(EventAction* eventAction)
 
 void SteppingAction::UserSteppingAction(G4Step const* step)
 {
-    if (step->GetPostStepPoint()->GetStepStatus() == fGeomBoundary)
+    auto prePoint = step->GetPreStepPoint();
+    auto postPoint = step->GetPostStepPoint();
+    auto preVol = prePoint->GetPhysicalVolume();
+    auto postVol = postPoint->GetPhysicalVolume();
+    auto track = step->GetTrack();
+
+    if (!preVol || !postVol || track->GetTrackID() != 1)
+        return;
+
+    G4String preName = preVol->GetName();
+    G4String postName = postVol->GetName();
+    G4int pdgID = track->GetDefinition()->GetPDGEncoding();
+    if (!(std::abs(pdgID) == 13 || pdgID == 2212))
+        return;
+
+    G4int eventID
+        = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
+    if (eventID < 10 && (preName == "GasBox" || postName == "GasBox"))
     {
-        G4VPhysicalVolume* preVol
-            = step->GetPreStepPoint()->GetPhysicalVolume();
-
-        G4VPhysicalVolume* postVol
-            = step->GetPostStepPoint()->GetPhysicalVolume();
-
-        G4String vol1 = preVol->GetName();
-        G4String vol2 = postVol->GetName();
-
-        if (vol1 == "GasBox" && vol2 == "World")
+        auto analysisManager = G4AnalysisManager::Instance();
+        G4int preVolumeCode = preName == "World" ? 0 : 1;
+        G4int postVolumeCode = postName == "World" ? 0 : 1;
+        G4int processType = -1;
+        G4int processSubtype = -1;
+        if (postPoint->GetProcessDefinedStep())
         {
-            G4Track* theTrack = step->GetTrack();
-            G4int pdgID = theTrack->GetDefinition()->GetPDGEncoding();
-            if (pdgID == 13 || pdgID == 2212)
-            {
-                G4ThreeVector pos = step->GetPostStepPoint()->GetPosition();
-                fEventAction->SetExitPos(pos);
+            processType = postPoint->GetProcessDefinedStep()->GetProcessType();
+            processSubtype
+                = postPoint->GetProcessDefinedStep()->GetProcessSubType();
+        }
+        G4ThreeVector preMom = prePoint->GetMomentum();
+        G4ThreeVector postMom = postPoint->GetMomentum();
+        analysisManager->FillNtupleIColumn(2, 0, eventID);
+        analysisManager->FillNtupleIColumn(
+            2, 1, track->GetCurrentStepNumber());
+        analysisManager->FillNtupleIColumn(2, 2, preVolumeCode);
+        analysisManager->FillNtupleIColumn(2, 3, postVolumeCode);
+        analysisManager->FillNtupleIColumn(2, 4, processType);
+        analysisManager->FillNtupleIColumn(2, 5, processSubtype);
+        analysisManager->FillNtupleDColumn(2, 6, step->GetStepLength());
+        analysisManager->FillNtupleDColumn(2, 7, prePoint->GetPosition().z());
+        analysisManager->FillNtupleDColumn(2, 8, postPoint->GetPosition().z());
+        analysisManager->FillNtupleDColumn(2, 9, preMom.x());
+        analysisManager->FillNtupleDColumn(2, 10, preMom.y());
+        analysisManager->FillNtupleDColumn(2, 11, preMom.z());
+        analysisManager->FillNtupleDColumn(2, 12, postMom.x());
+        analysisManager->FillNtupleDColumn(2, 13, postMom.y());
+        analysisManager->FillNtupleDColumn(2, 14, postMom.z());
+        analysisManager->FillNtupleDColumn(
+            2, 15, step->GetTotalEnergyDeposit());
+        analysisManager->AddNtupleRow(2);
+    }
 
-                G4double KE = theTrack->GetKineticEnergy();
-                fEventAction->SetExitKE(KE);
+    if (preName == "GasBox")
+        fEventAction->AddGasStep(step->GetStepLength());
 
-                G4ThreeVector momentum = theTrack->GetMomentum();
-                fEventAction->SetExitMom(momentum);
-
-                theTrack->SetTrackStatus(fStopAndKill);
-            }
+    if (postPoint->GetStepStatus() == fGeomBoundary)
+    {
+        if (preName == "World" && postName == "GasBox")
+        {
+            fEventAction->SetEntryPos(postPoint->GetPosition());
+            fEventAction->SetEntryMom(postPoint->GetMomentum());
+            fEventAction->SetEntryKE(postPoint->GetKineticEnergy());
+            fEventAction->SetEntered(true);
+        }
+        else if (preName == "GasBox" && postName == "World")
+        {
+            fEventAction->SetExitPos(postPoint->GetPosition());
+            fEventAction->SetExitKE(postPoint->GetKineticEnergy());
+            fEventAction->SetExitMom(postPoint->GetMomentum());
+            fEventAction->SetExited(true);
+            track->SetTrackStatus(fStopAndKill);
         }
     }
 }

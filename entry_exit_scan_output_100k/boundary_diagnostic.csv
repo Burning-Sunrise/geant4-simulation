@@ -1,0 +1,5 @@
+file,debug_events,entry_post_z_mean_mm,entry_direction_change_max_deg,first_gas_step_pre_z_mean_mm,first_gas_step_post_z_mean_mm,first_gas_step_direction_change_mean_deg,first_gas_step_direction_change_min_deg
+entry_scan_mu_p1000_L25_lateral_100k.root,10,-125.0,0.0,-125.0,-67.70853552775273,0.01566916272555474,0.0037190810348841463
+entry_scan_mu_p1000_L50_lateral_100k.root,10,-250.0,0.0,-250.0,-192.70853552775273,0.01566916272555474,0.0037190810348841463
+entry_scan_mu_p1000_L100_lateral_100k.root,10,-500.0,0.0,-500.0,-442.7085355277528,0.01566916272555474,0.0037190810348841463
+entry_scan_mu_p1000_L100_nolateral_100k.root,10,-500.0,0.0,-500.0,-442.70853499561656,0.016732788314093805,0.00371907537747481

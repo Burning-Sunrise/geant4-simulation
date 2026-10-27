@@ -34,6 +34,7 @@
 
 class G4VPhysicalVolume;
 class G4LogicalVolume;
+class G4GenericMessenger;
 
 namespace B1
 {
@@ -43,8 +44,8 @@ namespace B1
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
   public:
-    DetectorConstruction() = default;
-    ~DetectorConstruction() override = default;
+    DetectorConstruction();
+    ~DetectorConstruction() override;
 
     G4VPhysicalVolume* Construct() override;
     void ConstructSDandField() override;
@@ -53,6 +54,10 @@ class DetectorConstruction : public G4VUserDetectorConstruction
 
   protected:
     G4LogicalVolume* fScoringVolume = nullptr;
+
+  private:
+    G4double fGasLength = 0.;
+    G4GenericMessenger* fMessenger = nullptr;
 };
 
 }  // namespace B1

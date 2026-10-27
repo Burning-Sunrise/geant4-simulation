@@ -60,6 +60,18 @@ class EventAction : public G4UserEventAction
     void BeginOfEventAction(G4Event const* event) override;
     void EndOfEventAction(G4Event const* event) override;
 
+    void SetEntryPos(G4ThreeVector pos) { fEntryPos = pos; }
+    G4ThreeVector GetEntryPos() const { return fEntryPos; }
+
+    void SetEntryMom(G4ThreeVector mom) { fEntryMom = mom; }
+    G4ThreeVector GetEntryMom() const { return fEntryMom; }
+
+    void SetEntryKE(G4double ke) { fEntryKE = ke; }
+    G4double GetEntryKE() const { return fEntryKE; }
+
+    void SetEntered(G4bool entered) { fEntered = entered; }
+    G4bool GetEntered() const { return fEntered; }
+
     void SetExitPos(G4ThreeVector pos) { fPos = pos; }
     G4ThreeVector GetExitPos() { return fPos; }
 
@@ -69,11 +81,29 @@ class EventAction : public G4UserEventAction
     void SetExitKE(G4double ke) { fKE = ke; }
     G4double GetExitKE() { return fKE; }
 
+    void SetExited(G4bool exited) { fExited = exited; }
+    G4bool GetExited() const { return fExited; }
+
+    void AddGasStep(G4double stepLength)
+    {
+        fGasTrackLength += stepLength;
+        ++fGasStepCount;
+    }
+    G4double GetGasTrackLength() const { return fGasTrackLength; }
+    G4int GetGasStepCount() const { return fGasStepCount; }
+
   private:
     RunAction* fRunAction = nullptr;
+    G4ThreeVector fEntryPos;
+    G4ThreeVector fEntryMom;
+    G4double fEntryKE = 0.;
+    G4bool fEntered = false;
     G4ThreeVector fPos;
     G4ThreeVector fMom;
-    G4double fKE;
+    G4double fKE = 0.;
+    G4bool fExited = false;
+    G4double fGasTrackLength = 0.;
+    G4int fGasStepCount = 0;
 };
 
 }  // namespace B1

@@ -29,7 +29,7 @@
 
 #include "ActionInitialization.hh"
 #include "DetectorConstruction.hh"
-#include "FTFP_BERT.hh"
+#include "G4PhysListFactory.hh"
 
 #include "G4RunManagerFactory.hh"
 #include "G4SteppingVerbose.hh"
@@ -67,8 +67,14 @@ int main(int argc, char** argv)
   // Detector construction
   runManager->SetUserInitialization(new DetectorConstruction());
 
-  // Physics list(***FTFP HEP***)
-  auto physicsList = new FTFP_BERT;
+  // Select a Geant4 reference list on the command line. Examples:
+  //   ./exampleB1 run.mac FTFP_BERT
+  //   ./exampleB1 run.mac FTFP_BERT_EMY  (EM option 3)
+  //   ./exampleB1 run.mac FTFP_BERT_EMZ  (EM option 4)
+  G4String physicsListName = argc > 2 ? argv[2] : "FTFP_BERT";
+  G4PhysListFactory physicsListFactory;
+  auto physicsList = physicsListFactory.GetReferencePhysList(physicsListName);
+  G4cout << "Selected physics list: " << physicsListName << G4endl;
   physicsList->SetVerboseLevel(1);
   runManager->SetUserInitialization(physicsList);
 

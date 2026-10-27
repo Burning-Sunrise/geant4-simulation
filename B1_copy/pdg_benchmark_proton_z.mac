@@ -1,0 +1,17 @@
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+
+# The PDG endpoint relation assumes that the transverse displacement is
+# transported.  Make this explicit for muons and hadrons.
+/process/msc/MuHadLateralDisplacement true
+/run/initialize
+
+/analysis/setFileName /Users/s.x./Data/TPC_Simulation/pdg_benchmark_proton_z_p5000_EMY_lateral.root
+/gun/particle proton
+/gun/momentumAmp 5000 MeV
+/gun/position 0 0 -51 cm
+/gun/direction 0 0 1
+/run/printProgress 5000
+/run/beamOn 50000

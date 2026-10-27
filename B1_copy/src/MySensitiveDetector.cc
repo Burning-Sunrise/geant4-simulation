@@ -41,9 +41,6 @@ MySensitiveDetector::ProcessHits(G4Step* step, G4TouchableHistory* ROhist)
 
 void MySensitiveDetector::EndOfEvent(G4HCofThisEvent*)
 {
-    std::size_t nofHits = hitCollection->entries();
-    G4cout << G4endl << "-------->Hits Collection: in this event they are "
-           << nofHits << " hits in the TPC: " << G4endl;
-    for (std::size_t i = 0; i < nofHits; i++)
-        (*hitCollection)[i]->Print();
+    // Per-hit printing made large validation runs unnecessarily slow and
+    // produced multi-gigabyte logs. Hits are persisted by EventAction.
 }

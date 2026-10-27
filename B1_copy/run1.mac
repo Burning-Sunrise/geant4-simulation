@@ -18,7 +18,7 @@
 #
 /gun/particle mu-
 /gun/momentumAmp 50 MeV
-/gun/position -51 0 0  cm
-/gun/direction 1 0 0
-/run/beamOn 10
+/gun/position  0 0 -51 cm
+/gun/direction  0 0 1
+/run/beamOn 10000
 

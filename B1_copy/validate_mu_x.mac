@@ -1,0 +1,12 @@
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/run/initialize
+/analysis/setFileName /Users/s.x./Data/TPC_Simulation/validation_mu_x_p200.root
+/gun/particle mu-
+/gun/momentumAmp 200 MeV
+/gun/position -51 0 0 cm
+/gun/direction 1 0 0
+/run/printProgress 1000
+/run/beamOn 10000
