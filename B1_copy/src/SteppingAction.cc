@@ -38,6 +38,7 @@
 #include "G4Step.hh"
 #include "G4VProcess.hh"
 #include "G4SystemOfUnits.hh"
+#include <cstdlib>
 
 namespace B1
 {
@@ -70,7 +71,9 @@ void SteppingAction::UserSteppingAction(G4Step const* step)
 
     G4int eventID
         = G4RunManager::GetRunManager()->GetCurrentEvent()->GetEventID();
-    if (eventID < 10 && (preName == "GasBox" || postName == "GasBox"))
+    const char* stepLimitEnv = std::getenv("G4_STEP_RECORD_EVENTS");
+    const int stepRecordEvents = stepLimitEnv ? std::atoi(stepLimitEnv) : 10;
+    if (eventID < stepRecordEvents && (preName == "GasBox" || postName == "GasBox"))
     {
         auto analysisManager = G4AnalysisManager::Instance();
         G4int preVolumeCode = preName == "World" ? 0 : 1;

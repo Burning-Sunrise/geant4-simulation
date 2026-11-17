@@ -1,0 +1,16 @@
+/control/verbose 0
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+/run/numberOfThreads 4
+/B1/det/gasLength 100 cm
+/process/msc/MuHadLateralDisplacement true
+/run/initialize
+/analysis/setFileName /Users/s.x./Desktop/geant4_project/momentum_scan_step_energy_100000/root/muon_p50_L100_true_boundaries.root
+/gun/particle mu-
+/gun/momentumAmp 50 MeV
+/gun/position 0 0 -51 cm
+/gun/direction 0 0 1
+/run/printProgress 5000
+/random/setSeeds 22239 38671
+/run/beamOn 100000
