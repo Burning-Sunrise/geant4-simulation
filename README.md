@@ -163,6 +163,16 @@ root
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+## Acknowledgments
+
+Special thanks to Shashank Jayakumar for his patience and guidance throughout this project. Much of what I learned came from his willingness to explain things step by step, and this tutorial would not have been possible without his help.
+
+## Recorded-step energy comparison
+
+See [STEP_ENERGY_COMPARISON.md](STEP_ENERGY_COMPARISON.md) for the run commands,
+analysis method, and results. The new CSV and comparison figures are in
+[`momentum_scan_step_energy_100000/output`](momentum_scan_step_energy_100000/output).
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
