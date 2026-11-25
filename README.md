@@ -2,6 +2,14 @@
 
 A step-by-step guide for installing and running Geant4 simulations on macOS.
 
+## Current progress report
+
+The November 2026 report, *Validation of Geant4 Multiple Scattering in a
+He–CO2 Gas Target*, is available as a [PDF](latex_report/Geant4_Report_Nov_2026.pdf).
+The [LaTeX source and compilation instructions](latex_report/README.md) are in
+`latex_report/`, together with the figures used by the current report.
+Earlier report drafts are not included in this folder.
+
 > ⚠️ **Why not pixi?**
 > Pixi has known compatibility issues on macOS (e.g. the Qt `cocoa` platform plugin often fails to load). Installing from source is more reliable and is the recommended approach here. If you still want to try pixi, see [INSTALL_PIXI.md](./INSTALL_PIXI.md).
 

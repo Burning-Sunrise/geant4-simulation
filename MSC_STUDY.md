@@ -147,8 +147,7 @@ Run from `B1_copy/build` after rebuilding:
 ./exampleB1 ../validate_proton_x.mac
 ```
 
-Analyze without installing uproot (PyROOT is already present):
-
-```text
-python3 ../analyze_msc.py /Users/s.x./Data/TPC_Simulation/validation_*.root
-```
+The original analysis script used a gun-position definition of the chord
+angle and has been retired. The results above document the historical checks.
+For the current true-boundary analysis, use `analyze_entry_exit_scan.py` or
+`analyze_momentum_scan.py` from the project root.

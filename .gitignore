@@ -23,8 +23,21 @@ Makefile
 # Large simulation event files; regenerate these from the macros/scripts
 *.root
 
+# LaTeX intermediate files (retain report sources, figures, and final PDF)
+*.aux
+*.log
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
 # Local presentation working files and inspection artifacts
 *.key
 *.pptx
 *.inspect.ndjson
 Geant4_Multiple_Scattering_Update/
+
+# Retired diagnostic scripts retained locally only
+/analyze_msc.py
+/plot_psi_source_comparison.py
+/rerun_sola_entrance_only.py
